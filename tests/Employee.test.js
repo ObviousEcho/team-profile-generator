@@ -2,58 +2,38 @@ const Employee = require("../lib/Employee");
 
 describe("Employee", () => {
   describe("Initialization", () => {
-    it("it should return an object with an 'employeeName' property", () => {
+    it("it should return an object with an 'employeeName', 'id', and 'email' property", () => {
       const obj = new Employee();
 
-      expect("employeeName").toEqual(true);
+      expect("employeeName" in obj).toEqual(true);
+      expect("id" in obj).toEqual(true);
+      expect("email" in obj).toEqual(true);
     });
+  });
 
-    it("it should return an object with an 'id' property", () => {
+  describe("get functions", () => {
+    it("should retrieve name, id, email when appropriate function is invoked", () => {
+      const obj = new Employee("Andrew", 1, "email@test.com");
+
+      const getName = obj.getName();
+      const getId = obj.getId();
+      const getEmail = obj.getEmail();
+
+      expect(obj instanceof Employee).toEqual(true);
+      expect(getName).toEqual("Andrew");
+      expect(getId).toEqual(1);
+      expect(getEmail).toEqual("email@test.com");
+    });
+  });
+
+  describe("get role function", () => {
+    it("if 'role' does not exist on constructor object, create 'roll = Employee' on object", () => {
       const obj = new Employee();
 
-      expect("id").toEqual(true);
-    });
+      const createRole = obj.getRole();
 
-    it("it should return an object with an 'email' property", () => {
-      const obj = new Employee();
-
-      expect("email").toEqual(true);
-    });
-  });
-
-  describe("getName", () => {
-    it("should set name when created", () => {
-        const empName = "Andrew";
-        const obj = new Employee(empName);
-
-        expect(obj.employeeName).toEqual(empName);
-    });
-  });
-
-  describe("getId", () => {
-    it("should set id when created", () => {
-        const id = 1;
-        const obj = new Employee(id);
-
-        expect(obj.id).toEqual(id);
-    });
-  });
-
-  describe("getEmail", () => {
-    it("should set email when created", () => {
-        const mail = "test@test.com";
-        const obj = new Employee(mail);
-
-        expect(obj.email).toEqual(mail);
-    });
-  });
-
-  describe("getRole", () => {
-    it("should set role to 'Employee' when created", () => {
-        const title = "Employee";
-        const obj = new Employee(title);
-
-        expect(obj.position).toEqual(title);
+      expect(obj instanceof Employee).toEqual(true);
+      expect(createRole).toEqual("Employee");
     });
   });
 });
