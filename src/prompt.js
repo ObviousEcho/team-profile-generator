@@ -94,7 +94,8 @@ const addAnother = [
       "Would you like to add another team member (just hit enter for YES)?",
     default: true,
   },
-
+];
+const engIntQuest = [
   {
     type: "list",
     name: "addEmployee",
@@ -167,10 +168,27 @@ function addAnotherPrompt() {
   inquirer
     .prompt(addAnother)
     .then((answers) => {
-      if (answers.addAnother === "engineer") {
+      if (answers.addToTeam) {
+        addEngIntPrompt();
+      }
+    })
+    .catch((error) => {
+      if (error.isTtyError) {
+        // Prompt couldn't be rendered in the current environment
+      } else {
+        // Something else went wrong
+      }
+    });
+}
+
+function addEngIntPrompt() {
+  inquirer
+    .prompt(engIntQuest)
+    .then((answers) => {
+      if (answers.addEmployee === "engineer") {
         engineerPrompt();
       }
-      if (answers.addAnother === "intern") {
+      if (answers.addEmployee === "intern") {
         internPrompt();
       }
     })
