@@ -1,11 +1,4 @@
-const Employee = require('./lib/Employee');
-const Engineer = require('./lib/Engineer');
-const Manager = require('./lib/Manager');
-const Intern = require('./lib/Intern');
-const prompt = require('./src/prompt');
+const quest = require("./src/prompt");
 
-init();
+quest.managerPrompt();
 
-function init() {
-    prompt.managerPrompt();
-}
