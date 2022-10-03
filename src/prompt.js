@@ -191,6 +191,9 @@ function addEngIntPrompt() {
     });
 }
 
+const manager = "Manager";
+const engineer = "Engineer";
+const intern = "Intern";
 function renderHtml() {
   fs.writeFile(
     "index.html",
@@ -209,7 +212,7 @@ function renderHtml() {
         <nav class="jumbotron jumbotron-fluid">
             <h1 class="display-4 text-center">Team Profiles</h1>
         </nav>
-        <main class="container">
+        <main class="container d-flex justify-content-around">
             ${createClasses(manAnswers, manager)}
             ${createClasses(engAnswers, engineer)}
             ${createClasses(intAnswers, intern)}
@@ -223,9 +226,6 @@ function renderHtml() {
   );
 }
 
-const manager = "Manager";
-const engineer = "Engineer";
-const intern = "Intern";
 function createClasses(arr, role) {
   if (arr) {
     switch (role) {
@@ -270,15 +270,15 @@ function createCards(arr, role) {
   switch (role) {
     case manager:
       console.log(arr);
-      for (i of arr) {
+      for(i of arr) {
         let html = `<div class="card" style="width: 18rem;">
 <div class="card-body">
   <h5 class="card-title">${i.employeeName}</h5>
   <h6 class="card-subtitle mb-2 text-muted">${manager}</h6>
   <ul class="list-group">
     <li class="list-group-item">ID: ${i.id}</li>
-    <li class="list-group-item"><a href="#" class="card-link">Email: ${i.email}</a></li>
-    <li class="list-group-item"><a href="#" class="card-link">Office number: ${i.officeNumber}</a></li>
+    <li class="list-group-item"><a href="mailto:${i.email}" class="card-link">Email: ${i.email}</a></li>
+    <li class="list-group-item">Office number: ${i.officeNumber}</li>
   </ul>
 </div>
 </div>`;
@@ -295,8 +295,8 @@ return html;
   <h6 class="card-subtitle mb-2 text-muted">${i.getRole(engineer)}</h6>
   <ul class="list-group">
     <li class="list-group-item">ID: ${i.id}</li>
-    <li class="list-group-item"><a href="#" class="card-link">Email: ${i.email}</a></li>
-    <li class="list-group-item"><a href="#" class="card-link">GitHub: ${i.getGitHub(i.gitHub)}</a></li>
+    <li class="list-group-item"><a href="mailto:${i.email}" class="card-link">Email: ${i.email}</a></li>
+    <li class="list-group-item"><a href="https://github.com/${i.getGitHub(i.gitHub)}" class="card-link">GitHub: ${i.getGitHub(i.gitHub)}</a></li>
   </ul>
 </div>
 </div>`;
@@ -313,7 +313,7 @@ return html;
   <h6 class="card-subtitle mb-2 text-muted">${i.getRole(intern)}</h6>
   <ul class="list-group">
     <li class="list-group-item">ID: ${i.id}</li>
-    <li class="list-group-item"><a href="#" class="card-link">Email: ${i.email}</a></li>
+    <li class="list-group-item"><a href="mailto:${i.email}" class="card-link">Email: ${i.email}</a></li>
     <li class="list-group-item">School: ${i.getSchool(i.school)}</li>
   </ul>
 </div>
