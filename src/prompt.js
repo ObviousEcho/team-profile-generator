@@ -5,6 +5,7 @@ const Manager = require("../lib/Manager");
 const Intern = require("../lib/Intern");
 const fs = require("fs");
 
+// Inquirer prompt questions
 const manQuest = [
   {
     type: "input",
@@ -35,7 +36,7 @@ const manQuest = [
     name: "addEmployee",
     message:
       "Would you like to add an Engineer or an Intern to the team, or complete your team roster?",
-    choices: ["Engineer", "Intern", "Complete"],
+    choices: ["Engineer", "Intern"],
     filter(val) {
       return val.toLowerCase();
     },
@@ -112,16 +113,17 @@ const engIntQuest = [
     },
   },
 ];
+// empty arrays to store answers
 let manAnswers = [];
 let engAnswers = [];
 let intAnswers = [];
 
+// Inquirer prompts
 function managerPrompt() {
   inquirer
     .prompt(manQuest)
     .then((answers) => {
       manAnswers.push(answers);
-      console.log(manAnswers);
       if (answers.addEmployee === "engineer") {
         engineerPrompt();
       }
@@ -139,7 +141,6 @@ function engineerPrompt() {
     .prompt(engQuest)
     .then((answers) => {
       engAnswers.push(answers);
-      console.log(engAnswers);
       addAnotherPrompt();
     })
     .catch((error) => {
@@ -152,7 +153,6 @@ function internPrompt() {
     .prompt(intQuest)
     .then((answers) => {
       intAnswers.push(answers);
-      console.log(intAnswers);
       addAnotherPrompt();
     })
     .catch((error) => {
@@ -191,41 +191,41 @@ function addEngIntPrompt() {
     });
 }
 
+// writes html to dist folder
 const manager = "Manager";
 const engineer = "Engineer";
 const intern = "Intern";
 function renderHtml() {
   fs.writeFile(
-    "index.html",
-    `
-    <!DOCTYPE html>
-    <html lang="en">
+    "./dist/index.html",
+`<!DOCTYPE html>
+<html lang="en">
     
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
-        <title>Bio Builder</title>
-    </head>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+<title>Bio Builder</title>
+</head>
     
-    <body>
-        <nav class="jumbotron jumbotron-fluid">
-            <h1 class="display-4 text-center">Team Profiles</h1>
-        </nav>
-        <main class="container d-flex justify-content-around">
-            ${createClasses(manAnswers, manager)}
-            ${createClasses(engAnswers, engineer)}
-            ${createClasses(intAnswers, intern)}
-        </main>
+<body>
+  <nav class="jumbotron jumbotron-fluid bg-primary">
+    <h1 class="display-4 text-center text-white">Team Profiles</h1>
+  </nav>
+<main class="container d-flex justify-content-around">
+  ${createClasses(manAnswers, manager)}
+  ${createClasses(engAnswers, engineer)}
+  ${createClasses(intAnswers, intern)}
+</main>
     
-    </body>
+</body>
     
-    </html>
-    `,
+</html>`,
     (err) => (err ? console.error(err) : console.log("Page created!"))
   );
 }
 
+// Creates instances of classes based upon user input from cli
 function createClasses(arr, role) {
   if (arr) {
     switch (role) {
@@ -266,30 +266,33 @@ function createClasses(arr, role) {
   }
 }
 
+// Creates bootstrap cards to display data
+let htmlMan;
+let htmlEng;
+let htmlInt;
 function createCards(arr, role) {
   switch (role) {
     case manager:
-      console.log(arr);
       for(i of arr) {
-        let html = `<div class="card" style="width: 18rem;">
+        htmlMan = 
+`<div class="card bg-light" style="width: 18rem;">
 <div class="card-body">
   <h5 class="card-title">${i.employeeName}</h5>
   <h6 class="card-subtitle mb-2 text-muted">${manager}</h6>
   <ul class="list-group">
     <li class="list-group-item">ID: ${i.id}</li>
     <li class="list-group-item"><a href="mailto:${i.email}" class="card-link">Email: ${i.email}</a></li>
-    <li class="list-group-item">Office number: ${i.officeNumber}</li>
+    <li class="list-group-item">Office: ${i.officeNumber}</li>
   </ul>
 </div>
 </div>`;
-return html;
-      }
-      return;
+}
+return htmlMan;
 
     case engineer:
-      console.log(arr);
       for (i of arr) {
-        let html = `<div class="card" style="width: 18rem;">
+        htmlEng = 
+`<div class="card bg-light" style="width: 18rem;">
 <div class="card-body">
   <h5 class="card-title">${i.employeeName}</h5>
   <h6 class="card-subtitle mb-2 text-muted">${i.getRole(engineer)}</h6>
@@ -300,14 +303,13 @@ return html;
   </ul>
 </div>
 </div>`;
-return html;
-      }
-      return;
+}
+return htmlEng;
 
     case intern:
-      console.log(arr);
       for (i of arr) {
-        let html = `<div class="card" style="width: 18rem;">
+        htmlInt = 
+`<div class="card bg-light" style="width: 18rem;">
 <div class="card-body">
   <h5 class="card-title">${i.employeeName}</h5>
   <h6 class="card-subtitle mb-2 text-muted">${i.getRole(intern)}</h6>
@@ -318,14 +320,11 @@ return html;
   </ul>
 </div>
 </div>`;
-return html;
-      }
-      return;
+}
+return htmlInt;
   }
 }
 
 module.exports = {
   managerPrompt,
 };
-
-
